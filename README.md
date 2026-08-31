@@ -18,14 +18,15 @@ An enterprise-grade, educational **Express.js Middleware Security Service** desi
 6. [Rate-Limiting & IP Blocking Workflow](#rate-limiting--ip-blocking-workflow)
 7. [Installation & Setup](#installation--setup)
 8. [Running the Application](#running-the-application)
-9. [Running Automated Tests](#running-automated-tests)
-10. [API Reference Documentation](#api-reference-documentation)
-11. [JSON File Database Architecture](#json-file-database-architecture)
-12. [Cybersecurity Dashboard & Sandbox](#cybersecurity-dashboard--sandbox)
-13. [TAE Viva Demonstration Guide](#tae-viva-demonstration-guide)
-14. [Security Considerations & Limitations](#security-considerations--limitations)
-15. [Future Scope](#future-scope)
-16. [Comprehensive Viva Questions & Answers](#comprehensive-viva-questions--answers)
+9. [Deploying to Render](#deploying-to-render)
+10. [Running Automated Tests](#running-automated-tests)
+11. [API Reference Documentation](#api-reference-documentation)
+12. [JSON File Database Architecture](#json-file-database-architecture)
+13. [Cybersecurity Dashboard & Sandbox](#cybersecurity-dashboard--sandbox)
+14. [TAE Viva Demonstration Guide](#tae-viva-demonstration-guide)
+15. [Security Considerations & Limitations](#security-considerations--limitations)
+16. [Future Scope](#future-scope)
+17. [Comprehensive Viva Questions & Answers](#comprehensive-viva-questions--answers)
 
 ---
 
@@ -178,6 +179,35 @@ Once started, access:
 - **Interactive TAE Test Sandbox:** [http://localhost:3000/dashboard/api-test](http://localhost:3000/dashboard/api-test)
 - **Security Policy Settings:** [http://localhost:3000/dashboard/settings](http://localhost:3000/dashboard/settings)
 - **Health Check Endpoint:** [http://localhost:3000/health](http://localhost:3000/health)
+
+---
+
+## Deploying to Render
+
+This project is pre-configured for instant deployment on [Render](https://render.com/) with automated Blueprint support (`render.yaml`).
+
+### Quick 1-Click Deploy via Render Blueprint
+
+1. Push your repository to GitHub / GitLab.
+2. Open the [Render Dashboard](https://dashboard.render.com/) and click **New +** -> **Blueprint**.
+3. Connect your repository (`harshi2410/seqa`).
+4. Click **Apply**. Render will automatically detect [`render.yaml`](./render.yaml), configure environment variables, generate an `ADMIN_API_KEY`, and deploy the service.
+
+### Manual Web Service Configuration on Render
+
+If configuring manually via Render's Web Service UI:
+- **Runtime:** `Node`
+- **Build Command:** `npm install`
+- **Start Command:** `npm start`
+- **Health Check Path:** `/health`
+- **Key Environment Variables:**
+  - `NODE_ENV`: `production`
+  - `TRUST_PROXY`: `true` *(Enables real client IP detection behind Render's reverse proxy)*
+  - `ADMIN_API_KEY`: `<your-admin-secret-key>`
+  - `RATE_LIMIT_MAX_REQUESTS`: `100`
+  - `RATE_LIMIT_WINDOW_MS`: `60000`
+
+> 📖 For full detailed deployment steps and persistence guidance, see the [Render Deployment Guide (RENDER_DEPLOYMENT.md)](./RENDER_DEPLOYMENT.md).
 
 ---
 

@@ -9,6 +9,10 @@ const dotenv = require('dotenv');
 // Load environment variables from .env if present
 dotenv.config();
 
+const defaultDataDir = process.env.DATA_DIR 
+  ? path.resolve(process.env.DATA_DIR)
+  : path.join(__dirname, '..', 'data');
+
 const DEFAULT_CONFIG = {
   port: parseInt(process.env.PORT, 10) || 3000,
   nodeEnv: process.env.NODE_ENV || 'development',
@@ -27,11 +31,11 @@ const DEFAULT_CONFIG = {
   maxRequestLogs: parseInt(process.env.MAX_REQUEST_LOGS, 10) || 10000,
   
   // Storage Paths
-  dataDir: path.join(__dirname, '..', 'data'),
-  logsFile: path.join(__dirname, '..', 'data', 'security_logs.json'),
-  blocksFile: path.join(__dirname, '..', 'data', 'ip_blocks.json'),
-  statsFile: path.join(__dirname, '..', 'data', 'request_stats.json'),
-  configFile: path.join(__dirname, '..', 'data', 'config.json')
+  dataDir: defaultDataDir,
+  logsFile: path.join(defaultDataDir, 'security_logs.json'),
+  blocksFile: path.join(defaultDataDir, 'ip_blocks.json'),
+  statsFile: path.join(defaultDataDir, 'request_stats.json'),
+  configFile: path.join(defaultDataDir, 'config.json')
 };
 
 // In-memory active configuration
