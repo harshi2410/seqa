@@ -1,19 +1,19 @@
 {
-  "totalRequests": 200,
+  "totalRequests": 222,
   "totalViolations": 7,
   "totalBlocks": 6,
   "ipActivity": {
-    "127.0.0.1": 200
+    "127.0.0.1": 222
   },
   "endpointHits": {
     "/api/test": 39,
-    "/api/admin/logs?limit=50": 67,
+    "/api/admin/logs?limit=50": 78,
     "/api/admin/unblock": 3,
     "/health": 3,
     "/api/data": 3,
     "/api/slow?delay=50": 3,
     "/api/does-not-exist": 3,
-    "/api/admin/stats": 71,
+    "/api/admin/stats": 82,
     "/dashboard": 3,
     "/dashboard/api-test": 1,
     "/api/admin/logs": 2,
@@ -21,7 +21,7 @@
     "/": 1
   },
   "statusCodeHits": {
-    "200": 175,
+    "200": 197,
     "302": 1,
     "304": 1,
     "400": 1,
@@ -30,7 +30,7 @@
     "404": 3,
     "429": 6
   },
-  "lastUpdated": "2026-08-31T20:44:50.772Z",
+  "lastUpdated": "2026-08-31T20:45:45.725Z",
   "violationIps": {
     "127.0.0.1": 7
   }
