@@ -15,14 +15,22 @@ describe('JSON Database Service', () => {
   });
 
   afterAll(async () => {
-    if (fs.existsSync(TEST_DIR)) {
-      await fs.promises.rm(TEST_DIR, { recursive: true, force: true });
-    }
+    try {
+      if (fs.existsSync(TEST_DIR)) {
+        await fs.promises.rm(TEST_DIR, { recursive: true, force: true });
+      }
+    } catch (_) {}
   });
 
   beforeEach(async () => {
-    if (fs.existsSync(TEST_FILE)) {
-      await fs.promises.unlink(TEST_FILE);
+    try {
+      if (fs.existsSync(TEST_FILE)) {
+        await fs.promises.unlink(TEST_FILE);
+      }
+    } catch (_) {
+      try {
+        await fs.promises.writeFile(TEST_FILE, '[]', 'utf8');
+      } catch (_) {}
     }
   });
 
