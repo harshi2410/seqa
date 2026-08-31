@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>API Testing & Security Demonstration Sandbox</title>
+  
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <!-- Custom Cyber Theme CSS -->
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+  <!-- Top Navigation Bar -->
+  <nav class="navbar navbar-expand-lg navbar-cyber sticky-top">
+    <div class="container-fluid px-4">
+      <a class="navbar-brand" href="/dashboard">
+        <div class="brand-icon-wrapper">
+          <i class="bi bi-shield-lock-fill"></i>
+        </div>
+        <span>API SECURITY MONITOR</span>
+        <span class="brand-badge ms-1">SANDBOX</span>
+      </a>
+
+      <button class="navbar-toggler text-light border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+        <i class="bi bi-list fs-3"></i>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-4">
+          <li class="nav-item">
+            <a class="nav-link" href="/dashboard"><i class="bi bi-speedometer2 me-1"></i> Dashboard</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="/dashboard/api-test"><i class="bi bi-cpu me-1"></i> API Test Sandbox</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/dashboard/settings"><i class="bi bi-sliders me-1"></i> Settings</a>
+          </li>
+        </ul>
+
+        <div class="d-flex align-items-center gap-2">
+          <a href="/dashboard" class="btn btn-sm btn-cyber-outline">
+            <i class="bi bi-speedometer2 me-1"></i> View Monitor Dashboard
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="container-fluid px-4 py-4">
+
+    <!-- Header Section -->
+    <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+      <div>
+        <h4 class="font-mono text-light mb-1"><i class="bi bi-terminal-split me-2 text-cyan"></i>Interactive API Test & Rate-Limit Sandbox</h4>
+        <p class="text-muted small mb-0">Test client request quotas, observe sliding-window response headers, trigger 429 violations, and simulate 403 IP blocking live for faculty evaluation.</p>
+      </div>
+
+      <div class="d-flex gap-2">
+        <button class="btn btn-sm btn-cyber-danger" onclick="quickUnblockMyIp()">
+          <i class="bi bi-unlock-fill me-1"></i> Unblock My IP (127.0.0.1)
+        </button>
+        <button class="btn btn-sm btn-outline-secondary" onclick="clearTestHistory()">
+          <i class="bi bi-trash me-1"></i> Clear Log
+        </button>
+      </div>
+    </div>
+
+    <!-- Automated TAE Viva Demo Banner -->
+    <div class="ai-copilot-card p-3 mb-4">
+      <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
+        <div class="d-flex align-items-center gap-3">
+          <div class="brand-icon-wrapper bg-purple">
+            <i class="bi bi-mortarboard-fill text-light"></i>
+          </div>
+          <div>
+            <div class="font-mono text-light font-weight-bold">TAE Viva Presentation Mode</div>
+            <div class="text-muted small">One-click automated presentation: Demonstrates 200 OK -> 429 Rate Limit -> 403 IP Block -> Unblock</div>
+          </div>
+        </div>
+        <button class="btn btn-cyber-purple test-action-btn" id="btnAutoDemo" onclick="runAutomatedVivaDemo()">
+          <i class="bi bi-play-fill fs-5 align-middle"></i> Start Automated 1-Click Viva Demo
+        </button>
+      </div>
+    </div>
+
+    <div class="row g-4">
+      
+      <!-- Left Column: Controls & Quota Gauge -->
+      <div class="col-12 col-lg-5">
+        
+        <!-- Interactive Controls Card -->
+        <div class="cyber-card p-4 mb-4">
+          <h5 class="font-mono text-cyan mb-3"><i class="bi bi-sliders me-2"></i>Manual Test Generator</h5>
+          
+          <div class="mb-3">
+            <label class="form-label text-secondary small font-mono">TARGET ENDPOINT</label>
+            <select id="endpointSelect" class="form-select cyber-input font-mono">
+              <option value="/api/test" selected>GET /api/test (Standard Demo Route)</option>
+              <option value="/api/data">GET /api/data (Threat Intelligence Data)</option>
+              <option value="/api/slow?delay=350">GET /api/slow (Simulated Backend Latency)</option>
+              <option value="/health">GET /health (Health Status Check)</option>
+            </select>
+          </div>
+
+          <div class="d-grid gap-2 mb-3">
+            <button class="btn btn-cyber test-action-btn" onclick="sendSingleRequest()">
+              <i class="bi bi-play-circle-fill me-1"></i> Send 1 Request
+            </button>
+            
+            <button class="btn btn-cyber-outline test-action-btn" onclick="sendBatchRequests(10)">
+              <i class="bi bi-lightning-charge-fill me-1"></i> Send 10 Requests Burst
+            </button>
+            
+            <button class="btn btn-outline-danger test-action-btn" onclick="simulateAttack()">
+              <i class="bi bi-radioactive me-1"></i> Simulate Flood Attack (Trigger 429 & Block 403)
+            </button>
+          </div>
+        </div>
+
+        <!-- Live Quota & AI Diagnostics Display -->
+        <div class="cyber-card p-4 mb-4">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h6 class="font-mono text-secondary text-uppercase mb-0">Live Quota & Security Status</h6>
+            <div id="quotaStatusBadge">
+              <span class="badge badge-status badge-unblocked"><i class="bi bi-check-circle"></i> READY (200 OK)</span>
+            </div>
+          </div>
+
+          <div class="d-flex justify-content-between align-items-end mb-2">
+            <div>
+              <span class="text-muted small">Remaining Quota: </span>
+              <span class="fs-3 font-mono font-weight-bold text-light" id="quotaRemaining">-</span>
+            </div>
+            <div class="text-muted small font-mono">
+              Limit: <span id="quotaLimit">-</span> req / window
+            </div>
+          </div>
+
+          <div class="progress-cyber mb-3">
+            <div id="quotaProgressBar" class="progress-cyber-bar" style="width: 100%;"></div>
+          </div>
+
+          <!-- AI Diagnostic Telemetry Box -->
+          <div class="bg-dark p-3 rounded border border-secondary mb-2">
+            <div class="d-flex align-items-center gap-2 mb-1">
+              <i class="bi bi-cpu text-cyan"></i>
+              <span class="text-cyan small font-mono font-weight-bold">AI TELEMETRY ANALYSIS</span>
+            </div>
+            <div class="small text-light font-mono" id="aiDiagnosticText">
+              Ready to send requests. Click any button above to test middleware rate-limiting.
+            </div>
+          </div>
+
+          <div class="small text-muted font-mono">
+            <i class="bi bi-info-circle me-1 text-cyan"></i>
+            Headers tracked: <code>X-RateLimit-Limit</code>, <code>X-RateLimit-Remaining</code>, <code>X-RateLimit-Reset</code>, <code>Retry-After</code>
+          </div>
+        </div>
+
+        <!-- TAE Demonstration Flow Walkthrough Stepper -->
+        <div class="cyber-card p-4">
+          <h6 class="font-mono text-warning text-uppercase mb-3">
+            <i class="bi bi-mortarboard-fill me-2"></i>TAE Demonstration Steps
+          </h6>
+          
+          <div class="demo-step" id="demoStep1">
+            <div class="demo-step-num">1</div>
+            <div class="small text-secondary">
+              <strong class="text-light">Normal Request:</strong> Send request → Returns <code>200 OK</code> and decrements quota remaining.
+            </div>
+          </div>
+
+          <div class="demo-step" id="demoStep2">
+            <div class="demo-step-num">2</div>
+            <div class="small text-secondary">
+              <strong class="text-light">Quota Exhaustion:</strong> Send burst → Quota drops to 0.
+            </div>
+          </div>
+
+          <div class="demo-step" id="demoStep3">
+            <div class="demo-step-num">3</div>
+            <div class="small text-secondary">
+              <strong class="text-light">Rate Limit Breached:</strong> Returns <code>429 Too Many Requests</code> with <code>Retry-After</code> and logs violation.
+            </div>
+          </div>
+
+          <div class="demo-step" id="demoStep4">
+            <div class="demo-step-num">4</div>
+            <div class="small text-secondary">
+              <strong class="text-light">Automatic IP Quarantine:</strong> 3 violations trigger auto-block → Subsequent requests return <code>403 IP_BLOCKED</code>.
+            </div>
+          </div>
+
+          <div class="demo-step" id="demoStep5">
+            <div class="demo-step-num">5</div>
+            <div class="small text-secondary">
+              <strong class="text-light">Admin Unblock & Recovery:</strong> Click "Unblock My IP" → Access is immediately restored to <code>200 OK</code>.
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Right Column: Live Request Output Stream -->
+      <div class="col-12 col-lg-7">
+        <div class="cyber-card p-4 h-100">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <div>
+              <h5 class="font-mono text-light mb-0"><i class="bi bi-activity me-2 text-cyan"></i>Live Response Stream</h5>
+              <div class="small text-muted">Real-time HTTP telemetry with response codes and header inspection</div>
+            </div>
+            <span class="badge bg-dark text-cyan font-mono border border-secondary">REACTIVE STREAM</span>
+          </div>
+
+          <div class="table-responsive" style="max-height: 680px; overflow-y: auto;">
+            <table class="cyber-table">
+              <thead>
+                <tr>
+                  <th>Req #</th>
+                  <th>Endpoint</th>
+                  <th>HTTP Status</th>
+                  <th>Remaining</th>
+                  <th>Latency</th>
+                  <th>Response JSON</th>
+                </tr>
+              </thead>
+              <tbody id="testResultsTableBody">
+                <tr class="placeholder-row">
+                  <td colspan="6" class="text-center text-muted py-5">
+                    <i class="bi bi-cpu fs-2 text-secondary d-block mb-2"></i>
+                    No requests sent yet. Click any button on the left to start testing.
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- Toast Notification Container -->
+  <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11000" id="toastContainer"></div>
+
+  <!-- Bootstrap 5 Bundle JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  
+  <!-- Sandbox Logic JS -->
+  <script src="/js/api-test.js"></script>
+</body>
+</html>

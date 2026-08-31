@@ -1,0 +1,36 @@
+{
+  "name": "api-rate-limiting-security-logger",
+  "version": "1.0.0",
+  "description": "Express.js middleware security service for API rate-limiting, IP blocking, and security logging with JSON persistence and live dashboard",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "test": "jest --runInBand --detectOpenHandles --forceExit"
+  },
+  "keywords": [
+    "express",
+    "rate-limit",
+    "security",
+    "middleware",
+    "ip-blocker",
+    "logger",
+    "cybersecurity",
+    "dashboard"
+  ],
+  "author": "Antigravity Developer",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "helmet": "^7.1.0"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "supertest": "^7.0.0"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "testTimeout": 10000
+  }
+}

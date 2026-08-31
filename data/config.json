@@ -1,0 +1,7 @@
+{
+  "windowMs": 45000,
+  "maxRequests": 75,
+  "violationThreshold": 4,
+  "blockDurationMs": 120000,
+  "trustProxy": true
+}

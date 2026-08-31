@@ -1,0 +1,122 @@
+[
+  {
+    "id": "BL-MTHOHVNP-F014D705",
+    "ip": "127.0.0.1",
+    "reason": "Exceeded violation threshold of 2 within the monitoring window",
+    "violationCount": 2,
+    "blockedAt": "2026-08-31T20:16:07.813Z",
+    "blockedUntil": "2026-08-31T20:16:17.813Z",
+    "durationMs": 10000,
+    "status": "UNBLOCKED",
+    "unblockedAt": "2026-08-31T20:16:08.288Z",
+    "unblockedBy": "ADMIN"
+  },
+  {
+    "id": "BL-MTHOHVUO-99828309",
+    "ip": "127.0.0.1",
+    "reason": "Manual test block",
+    "violationCount": 3,
+    "blockedAt": "2026-08-31T20:16:08.064Z",
+    "blockedUntil": "2026-08-31T20:17:08.064Z",
+    "durationMs": 60000,
+    "status": "UNBLOCKED",
+    "unblockedAt": "2026-08-31T20:16:08.288Z",
+    "unblockedBy": "ADMIN"
+  },
+  {
+    "id": "BL-MTHOKRB9-A0D76005",
+    "ip": "127.0.0.1",
+    "reason": "Exceeded violation threshold of 2 within the monitoring window",
+    "violationCount": 2,
+    "blockedAt": "2026-08-31T20:18:22.149Z",
+    "blockedUntil": "2026-08-31T20:18:32.149Z",
+    "durationMs": 10000,
+    "status": "UNBLOCKED",
+    "unblockedAt": "2026-08-31T20:18:22.386Z",
+    "unblockedBy": "ADMIN"
+  },
+  {
+    "id": "BL-MTHOKREA-2781ED09",
+    "ip": "127.0.0.1",
+    "reason": "Manual test block",
+    "violationCount": 3,
+    "blockedAt": "2026-08-31T20:18:22.258Z",
+    "blockedUntil": "2026-08-31T20:19:22.258Z",
+    "durationMs": 60000,
+    "status": "UNBLOCKED",
+    "unblockedAt": "2026-08-31T20:18:22.386Z",
+    "unblockedBy": "ADMIN"
+  },
+  {
+    "id": "BL-MTHOM38Z-6804C005",
+    "ip": "127.0.0.1",
+    "reason": "Exceeded violation threshold of 2 within the monitoring window",
+    "violationCount": 2,
+    "blockedAt": "2026-08-31T20:19:24.275Z",
+    "blockedUntil": "2026-08-31T20:19:34.275Z",
+    "durationMs": 10000,
+    "status": "UNBLOCKED",
+    "unblockedAt": "2026-08-31T20:19:24.536Z",
+    "unblockedBy": "ADMIN"
+  },
+  {
+    "id": "BL-MTHOM3C2-212C9709",
+    "ip": "127.0.0.1",
+    "reason": "Manual test block",
+    "violationCount": 3,
+    "blockedAt": "2026-08-31T20:19:24.386Z",
+    "blockedUntil": "2026-08-31T20:20:24.386Z",
+    "durationMs": 60000,
+    "status": "UNBLOCKED",
+    "unblockedAt": "2026-08-31T20:19:24.536Z",
+    "unblockedBy": "ADMIN"
+  },
+  {
+    "id": "BL-MTHP1IDY-6169A005",
+    "ip": "127.0.0.1",
+    "reason": "Exceeded violation threshold of 2 within the monitoring window",
+    "violationCount": 2,
+    "blockedAt": "2026-08-31T20:31:23.734Z",
+    "blockedUntil": "2026-08-31T20:31:33.734Z",
+    "durationMs": 10000,
+    "status": "UNBLOCKED",
+    "unblockedAt": "2026-08-31T20:31:24.325Z",
+    "unblockedBy": "ADMIN"
+  },
+  {
+    "id": "BL-MTHP1IJ1-2E8D1009",
+    "ip": "127.0.0.1",
+    "reason": "Manual test block",
+    "violationCount": 3,
+    "blockedAt": "2026-08-31T20:31:23.917Z",
+    "blockedUntil": "2026-08-31T20:32:23.917Z",
+    "durationMs": 60000,
+    "status": "UNBLOCKED",
+    "unblockedAt": "2026-08-31T20:31:24.325Z",
+    "unblockedBy": "ADMIN"
+  },
+  {
+    "id": "BL-MTHP61SE-50154605",
+    "ip": "127.0.0.1",
+    "reason": "Exceeded violation threshold of 2 within the monitoring window",
+    "violationCount": 2,
+    "blockedAt": "2026-08-31T20:34:55.502Z",
+    "blockedUntil": "2026-08-31T20:35:05.502Z",
+    "durationMs": 10000,
+    "status": "UNBLOCKED",
+    "unblockedAt": "2026-08-31T20:34:56.039Z",
+    "unblockedBy": "ADMIN"
+  },
+  {
+    "id": "BL-MTHP61YA-077F0409",
+    "ip": "127.0.0.1",
+    "reason": "Manual test block",
+    "violationCount": 3,
+    "blockedAt": "2026-08-31T20:34:55.714Z",
+    "blockedUntil": "2026-08-31T20:35:55.714Z",
+    "durationMs": 60000,
+    "status": "UNBLOCKED",
+    "unblockedAt": "2026-08-31T20:34:56.039Z",
+    "unblockedBy": "ADMIN"
+  }
+]
