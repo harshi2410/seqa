@@ -20,9 +20,25 @@ function setAdminKey(key) {
 }
 
 function updateAdminKeyDisplay() {
+  const key = getAdminKey();
   const keyInput = document.getElementById('adminKeyInput');
   if (keyInput) {
-    keyInput.value = getAdminKey();
+    keyInput.value = key;
+  }
+  const bannerInput = document.getElementById('bannerAdminKeyInput');
+  if (bannerInput && !bannerInput.value) {
+    bannerInput.value = key;
+  }
+}
+
+function showAuthBanner(show) {
+  const banner = document.getElementById('adminAuthBanner');
+  if (banner) {
+    if (show) {
+      banner.classList.remove('d-none');
+    } else {
+      banner.classList.add('d-none');
+    }
   }
 }
 
@@ -41,7 +57,10 @@ async function fetchAdmin(endpoint, options = {}) {
   });
 
   if (response.status === 401) {
-    showToast('Admin Authentication Failed. Please verify your Admin Key.', 'danger');
+    showAuthBanner(true);
+    showToast('Admin Authentication Failed. Please enter your valid Admin API Key.', 'danger');
+  } else if (response.ok) {
+    showAuthBanner(false);
   }
 
   return response;
@@ -399,6 +418,25 @@ document.addEventListener('DOMContentLoaded', () => {
       showToast('Admin API Key updated for dashboard session', 'success');
       loadStats();
       loadLogs();
+    });
+  }
+
+  // Set up Banner Admin key input save
+  const bannerSaveBtn = document.getElementById('bannerSaveKeyBtn');
+  const bannerInput = document.getElementById('bannerAdminKeyInput');
+  if (bannerSaveBtn && bannerInput) {
+    const handleBannerSave = () => {
+      const val = bannerInput.value.trim();
+      if (val) {
+        setAdminKey(val);
+        showToast('Admin API Key connected!', 'success');
+        loadStats();
+        loadLogs();
+      }
+    };
+    bannerSaveBtn.addEventListener('click', handleBannerSave);
+    bannerInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') handleBannerSave();
     });
   }
 

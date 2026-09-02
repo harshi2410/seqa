@@ -4,6 +4,29 @@
 
 let testRequestCounter = 0;
 let isRunningBatch = false;
+let detectedClientIp = '127.0.0.1';
+
+const DEFAULT_ADMIN_KEY = 'admin-secret-key-2026';
+
+function getAdminKey() {
+  return localStorage.getItem('sec_admin_key') || DEFAULT_ADMIN_KEY;
+}
+
+function setAdminKey(key) {
+  localStorage.setItem('sec_admin_key', key);
+  const keyInput = document.getElementById('adminKeyInput');
+  if (keyInput) keyInput.value = key;
+}
+
+function updateClientIpDisplay(ip) {
+  if (ip && typeof ip === 'string') {
+    detectedClientIp = ip;
+    const btn = document.getElementById('btnUnblockMyIp');
+    if (btn) {
+      btn.innerHTML = `<i class="bi bi-unlock-fill me-1"></i> Unblock My IP (${ip})`;
+    }
+  }
+}
 
 // Toast helper
 function showToast(message, type = 'info') {
@@ -205,6 +228,11 @@ async function executeRequest() {
       responseData = { raw: await res.text() };
     }
 
+    // Extract detected client IP from response if present
+    if (responseData && (responseData.clientIp || responseData.ip)) {
+      updateClientIpDisplay(responseData.clientIp || responseData.ip);
+    }
+
     // Update Live Quota Display & AI Diagnostics
     updateQuotaDisplay(limit, remaining, resetTime, status, retryAfter, elapsed);
 
@@ -348,7 +376,8 @@ function clearTestHistory() {
  * Quick Unblock self helper
  */
 async function quickUnblockMyIp() {
-  const adminKey = localStorage.getItem('sec_admin_key') || 'admin-secret-key-2026';
+  const adminKey = getAdminKey();
+  const targetIp = detectedClientIp || '127.0.0.1';
   
   try {
     const res = await fetch('/api/admin/unblock', {
@@ -357,16 +386,16 @@ async function quickUnblockMyIp() {
         'Content-Type': 'application/json',
         'X-Admin-Key': adminKey
       },
-      body: JSON.stringify({ ip: '127.0.0.1', reason: 'TAE sandbox quick unblock' })
+      body: JSON.stringify({ ip: targetIp, reason: 'TAE sandbox quick unblock' })
     });
 
     const data = await res.json();
     if (data.success) {
-      showToast('IP 127.0.0.1 unblocked successfully! Access restored.', 'success');
+      showToast(`IP ${targetIp} unblocked successfully! Access restored.`, 'success');
       updateQuotaDisplay('100', '100', '-', 200, 0, 5);
       setDemoStepActive(5);
     } else {
-      showToast(data.message || 'Failed to unblock IP', 'danger');
+      showToast(data.message || 'Failed to unblock IP (Check your Admin Key)', 'danger');
     }
   } catch (err) {
     showToast('Failed to contact admin unblock endpoint', 'danger');
@@ -380,6 +409,28 @@ function updateControlsState(disabled) {
   const buttons = document.querySelectorAll('.test-action-btn');
   buttons.forEach(b => b.disabled = disabled);
 }
+
+// Page Initialization
+document.addEventListener('DOMContentLoaded', () => {
+  const keyInput = document.getElementById('adminKeyInput');
+  if (keyInput) {
+    keyInput.value = getAdminKey();
+    keyInput.addEventListener('change', (e) => {
+      setAdminKey(e.target.value.trim());
+      showToast('Admin API Key updated for sandbox session', 'success');
+    });
+  }
+
+  // Pre-fetch health or test endpoint to detect client IP automatically
+  fetch('/api/test')
+    .then(r => r.json())
+    .then(data => {
+      if (data && (data.clientIp || data.ip)) {
+        updateClientIpDisplay(data.clientIp || data.ip);
+      }
+    })
+    .catch(() => {});
+});
 
 window.runAutomatedVivaDemo = runAutomatedVivaDemo;
 window.sendSingleRequest = sendSingleRequest;

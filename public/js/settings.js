@@ -186,6 +186,16 @@ async function resetToDefaults() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+  const keyInput = document.getElementById('adminKeyInput');
+  if (keyInput) {
+    keyInput.value = getAdminKey();
+    keyInput.addEventListener('change', (e) => {
+      localStorage.setItem('sec_admin_key', e.target.value.trim());
+      showToast('Admin API Key updated', 'success');
+      loadConfig();
+    });
+  }
+
   loadConfig();
 
   const form = document.getElementById('settingsForm');

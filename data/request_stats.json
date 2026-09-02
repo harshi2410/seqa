@@ -1,24 +1,30 @@
 {
-  "totalRequests": 12,
-  "totalViolations": 1,
-  "totalBlocks": 0,
+  "totalRequests": 41,
+  "totalViolations": 6,
+  "totalBlocks": 4,
+  "violationIps": {
+    "127.0.0.1": 6
+  },
+  "lastUpdated": "2026-09-02T19:20:23.939Z",
   "ipActivity": {
-    "127.0.0.1": 12
+    "127.0.0.1": 41
   },
   "endpointHits": {
-    "/api/test": 8,
-    "/health": 1,
-    "/api/data": 1,
-    "/api/slow?delay=50": 1,
-    "/api/does-not-exist": 1
+    "/api/test": 26,
+    "/api/admin/unblock": 2,
+    "/health": 2,
+    "/api/data": 2,
+    "/api/slow?delay=50": 2,
+    "/api/does-not-exist": 2,
+    "/api/admin/stats": 3,
+    "/api/admin/logs": 1,
+    "/api/admin/config": 1
   },
   "statusCodeHits": {
-    "200": 10,
-    "404": 1,
-    "429": 1
-  },
-  "lastUpdated": "2026-08-31T20:56:06.789Z",
-  "violationIps": {
-    "127.0.0.1": 1
+    "200": 27,
+    "401": 2,
+    "403": 6,
+    "404": 2,
+    "429": 4
   }
 }
