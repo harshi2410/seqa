@@ -28,7 +28,7 @@ function updateClientIpDisplay(ip) {
   }
 }
 
-// Toast helper
+// Safe Toast helper
 function showToast(message, type = 'info') {
   const toastContainer = document.getElementById('toastContainer');
   if (!toastContainer) return;
@@ -49,9 +49,13 @@ function showToast(message, type = 'info') {
 
   toastContainer.insertAdjacentHTML('beforeend', toastHtml);
   const toastEl = document.getElementById(toastId);
-  const toast = new bootstrap.Toast(toastEl, { delay: 4000 });
-  toast.show();
-  toastEl.addEventListener('hidden.bs.toast', () => toastEl.remove());
+  try {
+    if (window.bootstrap && bootstrap.Toast) {
+      const toast = new bootstrap.Toast(toastEl, { delay: 4000 });
+      toast.show();
+      toastEl.addEventListener('hidden.bs.toast', () => toastEl.remove());
+    }
+  } catch (_) {}
 }
 
 /**
@@ -68,6 +72,16 @@ function setDemoStepActive(stepNum) {
 }
 
 /**
+ * Disable/enable buttons during batches
+ */
+function updateControlsState(disabled) {
+  const buttons = document.querySelectorAll('.test-action-btn');
+  buttons.forEach(b => {
+    b.disabled = disabled;
+  });
+}
+
+/**
  * 1-Click Automated TAE Viva Demonstration Runner
  */
 async function runAutomatedVivaDemo() {
@@ -75,53 +89,58 @@ async function runAutomatedVivaDemo() {
   isRunningBatch = true;
   updateControlsState(true);
 
-  showToast('🎓 Starting Automated TAE Viva Demonstration Presentation...', 'info');
+  try {
+    showToast('🎓 Starting Automated TAE Viva Demonstration Presentation...', 'info');
 
-  // Step 1: Normal Request (200 OK)
-  setDemoStepActive(1);
-  showToast('Step 1: Sending single normal request (200 OK)...', 'info');
-  await executeRequest();
-  await new Promise(r => setTimeout(r, 1200));
-
-  // Step 2: Quota Exhaustion Burst
-  setDemoStepActive(2);
-  showToast('Step 2: Sending rapid request burst to deplete quota...', 'info');
-  for (let i = 0; i < 6; i++) {
+    // Step 1: Normal Request (200 OK)
+    setDemoStepActive(1);
+    showToast('Step 1: Sending single normal request (200 OK)...', 'info');
     await executeRequest();
-    await new Promise(r => setTimeout(r, 80));
-  }
-  await new Promise(r => setTimeout(r, 1000));
+    await new Promise(r => setTimeout(r, 1000));
 
-  // Step 3: Trigger 429 Rate Limit Exceeded
-  setDemoStepActive(3);
-  showToast('Step 3: Exceeding rate limit -> Generating 429 Too Many Requests...', 'warning');
-  await executeRequest();
-  await new Promise(r => setTimeout(r, 1200));
-
-  // Step 4: Trigger Repeated Violations until 403 IP Quarantine
-  setDemoStepActive(4);
-  showToast('Step 4: Repeated violations triggering automatic IP Quarantine (403 Forbidden)...', 'danger');
-  for (let i = 0; i < 30; i++) {
-    const res = await executeRequest();
-    await new Promise(r => setTimeout(r, 60));
-    if (res && res.status === 403) {
-      break;
+    // Step 2: Quota Exhaustion Burst
+    setDemoStepActive(2);
+    showToast('Step 2: Sending rapid request burst to deplete quota...', 'info');
+    for (let i = 0; i < 6; i++) {
+      await executeRequest();
+      await new Promise(r => setTimeout(r, 80));
     }
+    await new Promise(r => setTimeout(r, 800));
+
+    // Step 3: Trigger 429 Rate Limit Exceeded
+    setDemoStepActive(3);
+    showToast('Step 3: Exceeding rate limit -> Generating 429 Too Many Requests...', 'warning');
+    await executeRequest();
+    await new Promise(r => setTimeout(r, 1000));
+
+    // Step 4: Trigger Repeated Violations until 403 IP Quarantine
+    setDemoStepActive(4);
+    showToast('Step 4: Repeated violations triggering automatic IP Quarantine (403 Forbidden)...', 'danger');
+    for (let i = 0; i < 25; i++) {
+      const res = await executeRequest();
+      await new Promise(r => setTimeout(r, 60));
+      if (res && res.status === 403) {
+        break;
+      }
+    }
+    await new Promise(r => setTimeout(r, 1000));
+
+    // Step 5: Unblock & Restore Access
+    setDemoStepActive(5);
+    showToast('Step 5: Invoking Administrator Unblock to restore access...', 'success');
+    await quickUnblockMyIp();
+    await new Promise(r => setTimeout(r, 1000));
+
+    // Verify access restored
+    await executeRequest();
+    showToast('🎉 TAE DEMO COMPLETE: Full security cycle demonstrated successfully!', 'success');
+  } catch (err) {
+    console.error('Demo error:', err);
+    showToast('Demo encountered error: ' + err.message, 'danger');
+  } finally {
+    isRunningBatch = false;
+    updateControlsState(false);
   }
-  await new Promise(r => setTimeout(r, 1500));
-
-  // Step 5: Unblock & Restore Access
-  setDemoStepActive(5);
-  showToast('Step 5: Invoking Administrator Unblock to restore access...', 'success');
-  await quickUnblockMyIp();
-  await new Promise(r => setTimeout(r, 1000));
-
-  // Verify access restored
-  await executeRequest();
-  showToast('🎉 TAE DEMO COMPLETE: Full security cycle demonstrated successfully!', 'success');
-
-  isRunningBatch = false;
-  updateControlsState(false);
 }
 
 /**
@@ -142,23 +161,27 @@ async function sendBatchRequests(count = 10) {
   updateControlsState(true);
   setDemoStepActive(2);
 
-  showToast(`Initiating rapid batch of ${count} requests...`, 'info');
+  try {
+    showToast(`Initiating rapid batch of ${count} requests...`, 'info');
 
-  for (let i = 0; i < count; i++) {
-    const result = await executeRequest();
-    await new Promise(r => setTimeout(r, 60));
-    
-    if (result && result.status === 403) {
-      setDemoStepActive(4);
-      showToast(`IP has been blocked on request #${testRequestCounter}!`, 'danger');
-      break;
-    } else if (result && result.status === 429) {
-      setDemoStepActive(3);
+    for (let i = 0; i < count; i++) {
+      const result = await executeRequest();
+      await new Promise(r => setTimeout(r, 60));
+      
+      if (result && result.status === 403) {
+        setDemoStepActive(4);
+        showToast(`IP blocked on request #${testRequestCounter}!`, 'danger');
+        break;
+      } else if (result && result.status === 429) {
+        setDemoStepActive(3);
+      }
     }
+  } catch (err) {
+    console.error('Batch error:', err);
+  } finally {
+    isRunningBatch = false;
+    updateControlsState(false);
   }
-
-  isRunningBatch = false;
-  updateControlsState(false);
 }
 
 /**
@@ -166,28 +189,29 @@ async function sendBatchRequests(count = 10) {
  */
 async function simulateAttack() {
   if (isRunningBatch) return;
-  if (!confirm('This will send rapid bursts of requests to exceed the limit and demonstrate automatic IP blocking. Proceed?')) {
-    return;
-  }
-
   isRunningBatch = true;
   updateControlsState(true);
   setDemoStepActive(3);
-  showToast('Starting attack simulation to trigger 429 and 403 IP block...', 'warning');
 
-  for (let i = 0; i < 100; i++) {
-    const result = await executeRequest();
-    await new Promise(r => setTimeout(r, 40));
+  try {
+    showToast('Starting attack simulation to trigger 429 and 403 IP block...', 'warning');
 
-    if (result && result.status === 403) {
-      setDemoStepActive(4);
-      showToast(`🎯 DEMO OBJECTIVE ACHIEVED: IP BLOCKED (403 Forbidden)`, 'danger');
-      break;
+    for (let i = 0; i < 60; i++) {
+      const result = await executeRequest();
+      await new Promise(r => setTimeout(r, 40));
+
+      if (result && result.status === 403) {
+        setDemoStepActive(4);
+        showToast(`🎯 DEMO OBJECTIVE ACHIEVED: IP BLOCKED (403 Forbidden)`, 'danger');
+        break;
+      }
     }
+  } catch (err) {
+    console.error('Simulate attack error:', err);
+  } finally {
+    isRunningBatch = false;
+    updateControlsState(false);
   }
-
-  isRunningBatch = false;
-  updateControlsState(false);
 }
 
 /**
@@ -275,8 +299,8 @@ function updateQuotaDisplay(limit, remaining, resetTime, status, retryAfter, ela
   const quotaStatusBadge = document.getElementById('quotaStatusBadge');
   const diagText = document.getElementById('aiDiagnosticText');
 
-  if (quotaLimitEl) quotaLimitEl.textContent = limit;
-  if (quotaRemainingEl) quotaRemainingEl.textContent = remaining;
+  if (quotaLimitEl && limit !== '-') quotaLimitEl.textContent = limit;
+  if (quotaRemainingEl && remaining !== '-') quotaRemainingEl.textContent = remaining;
 
   if (limit !== '-' && remaining !== '-') {
     const l = Number(limit);
@@ -303,7 +327,7 @@ function updateQuotaDisplay(limit, remaining, resetTime, status, retryAfter, ela
     } else if (status === 403) {
       quotaStatusBadge.innerHTML = '<span class="badge badge-status badge-blocked"><i class="bi bi-shield-x"></i> IP QUARANTINED (403)</span>';
     } else {
-      quotaStatusBadge.innerHTML = `<span class="badge bg-secondary">${status}</span>`;
+      quotaStatusBadge.innerHTML = `<span class="badge bg-secondary">${status || 'ERR'}</span>`;
     }
   }
 
@@ -314,6 +338,8 @@ function updateQuotaDisplay(limit, remaining, resetTime, status, retryAfter, ela
       diagText.innerHTML = `🟡 <strong>429 TOO MANY REQUESTS</strong> | Window exhausted. Server sent <code>Retry-After: ${retryAfter}s</code>. Security violation registered.`;
     } else if (status === 403) {
       diagText.innerHTML = `🔴 <strong>403 IP BLOCKED</strong> | Repeated rate-limit violations breached the threshold. IP quarantined from protected routes.`;
+    } else if (status === 0) {
+      diagText.innerHTML = `⚠️ <strong>Network Error</strong> | Failed to reach server. Check internet or server status.`;
     } else {
       diagText.innerHTML = `Status ${status} recorded in ${elapsed}ms.`;
     }
@@ -327,8 +353,9 @@ function appendResultRow(result) {
   const tbody = document.getElementById('testResultsTableBody');
   if (!tbody) return;
 
-  if (result.reqNum === 1 && tbody.querySelector('.placeholder-row')) {
-    tbody.innerHTML = '';
+  const placeholder = tbody.querySelector('.placeholder-row');
+  if (placeholder) {
+    placeholder.remove();
   }
 
   let statusBadge = '';
@@ -339,7 +366,7 @@ function appendResultRow(result) {
   } else if (result.status === 403) {
     statusBadge = '<span class="badge badge-http-403">403 BLOCKED</span>';
   } else {
-    statusBadge = `<span class="badge bg-secondary">${result.status}</span>`;
+    statusBadge = `<span class="badge bg-secondary">${result.status || 'ERR'}</span>`;
   }
 
   const row = document.createElement('tr');
@@ -402,16 +429,9 @@ async function quickUnblockMyIp() {
   }
 }
 
-/**
- * Disable/enable buttons during batches
- */
-function updateControlsState(disabled) {
-  const buttons = document.querySelectorAll('.test-action-btn');
-  buttons.forEach(b => b.disabled = disabled);
-}
-
 // Page Initialization
 document.addEventListener('DOMContentLoaded', () => {
+  // Sync Admin Key input
   const keyInput = document.getElementById('adminKeyInput');
   if (keyInput) {
     keyInput.value = getAdminKey();
@@ -420,6 +440,25 @@ document.addEventListener('DOMContentLoaded', () => {
       showToast('Admin API Key updated for sandbox session', 'success');
     });
   }
+
+  // Explicit Button Event Listeners
+  const btnSingle = document.getElementById('btnSendSingle');
+  if (btnSingle) btnSingle.addEventListener('click', () => sendSingleRequest());
+
+  const btnBatch = document.getElementById('btnSendBatch');
+  if (btnBatch) btnBatch.addEventListener('click', () => sendBatchRequests(10));
+
+  const btnSimulate = document.getElementById('btnSimulateAttack');
+  if (btnSimulate) btnSimulate.addEventListener('click', () => simulateAttack());
+
+  const btnAutoDemo = document.getElementById('btnAutoDemo');
+  if (btnAutoDemo) btnAutoDemo.addEventListener('click', () => runAutomatedVivaDemo());
+
+  const btnUnblock = document.getElementById('btnUnblockMyIp');
+  if (btnUnblock) btnUnblock.addEventListener('click', () => quickUnblockMyIp());
+
+  const btnClear = document.getElementById('btnClearHistory');
+  if (btnClear) btnClear.addEventListener('click', () => clearTestHistory());
 
   // Pre-fetch health or test endpoint to detect client IP automatically
   fetch('/api/test')
@@ -432,9 +471,11 @@ document.addEventListener('DOMContentLoaded', () => {
     .catch(() => {});
 });
 
+// Window Exports
 window.runAutomatedVivaDemo = runAutomatedVivaDemo;
 window.sendSingleRequest = sendSingleRequest;
 window.sendBatchRequests = sendBatchRequests;
 window.simulateAttack = simulateAttack;
 window.clearTestHistory = clearTestHistory;
 window.quickUnblockMyIp = quickUnblockMyIp;
+window.sendSingleRequest = sendSingleRequest;

@@ -71,10 +71,10 @@
       </div>
 
       <div class="d-flex gap-2">
-        <button id="btnUnblockMyIp" class="btn btn-sm btn-cyber-danger" onclick="quickUnblockMyIp()">
+        <button id="btnUnblockMyIp" class="btn btn-sm btn-cyber-danger">
           <i class="bi bi-unlock-fill me-1"></i> Unblock My IP
         </button>
-        <button class="btn btn-sm btn-outline-secondary" onclick="clearTestHistory()">
+        <button id="btnClearHistory" class="btn btn-sm btn-outline-secondary">
           <i class="bi bi-trash me-1"></i> Clear Log
         </button>
       </div>
@@ -92,7 +92,7 @@
             <div class="text-muted small">One-click automated presentation: Demonstrates 200 OK -> 429 Rate Limit -> 403 IP Block -> Unblock</div>
           </div>
         </div>
-        <button class="btn btn-cyber-purple test-action-btn" id="btnAutoDemo" onclick="runAutomatedVivaDemo()">
+        <button class="btn btn-cyber-purple test-action-btn" id="btnAutoDemo">
           <i class="bi bi-play-fill fs-5 align-middle"></i> Start Automated 1-Click Viva Demo
         </button>
       </div>
@@ -118,15 +118,15 @@
           </div>
 
           <div class="d-grid gap-2 mb-3">
-            <button class="btn btn-cyber test-action-btn" onclick="sendSingleRequest()">
+            <button id="btnSendSingle" class="btn btn-cyber test-action-btn">
               <i class="bi bi-play-circle-fill me-1"></i> Send 1 Request
             </button>
             
-            <button class="btn btn-cyber-outline test-action-btn" onclick="sendBatchRequests(10)">
+            <button id="btnSendBatch" class="btn btn-cyber-outline test-action-btn">
               <i class="bi bi-lightning-charge-fill me-1"></i> Send 10 Requests Burst
             </button>
             
-            <button class="btn btn-outline-danger test-action-btn" onclick="simulateAttack()">
+            <button id="btnSimulateAttack" class="btn btn-outline-danger test-action-btn">
               <i class="bi bi-radioactive me-1"></i> Simulate Flood Attack (Trigger 429 & Block 403)
             </button>
           </div>
