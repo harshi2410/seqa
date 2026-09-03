@@ -527,3 +527,89 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: #475569;
 }
+
+/* Theme toggle and light theme */
+.theme-toggle {
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  color: var(--text-secondary);
+  border: 1px solid var(--border-subtle);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.theme-toggle:hover,
+.theme-toggle:focus-visible {
+  color: var(--neon-cyan);
+  border-color: var(--neon-cyan);
+  background: rgba(0, 242, 254, 0.1);
+}
+
+:root[data-theme='light'] {
+  --bg-main: #eef2f5;
+  --bg-surface-1: #ffffff;
+  --bg-surface-2: #f4f7f9;
+  --bg-surface-3: #e4ebef;
+  --bg-card: rgba(255, 255, 255, 0.94);
+  --bg-card-hover: #ffffff;
+  --border-subtle: rgba(15, 23, 42, 0.14);
+  --border-focus: rgba(8, 145, 178, 0.4);
+  --text-primary: #17212b;
+  --text-secondary: #475569;
+  --text-muted: #64748b;
+  --neon-cyan: #087f9b;
+  --neon-blue: #1479a6;
+}
+
+:root[data-theme='light'] body {
+  background: radial-gradient(circle at 50% 0%, #ffffff 0%, var(--bg-main) 75%);
+}
+
+:root[data-theme='light'] .navbar-cyber {
+  background: rgba(255, 255, 255, 0.94);
+}
+
+:root[data-theme='light'] .navbar-brand,
+:root[data-theme='light'] .nav-link:hover,
+:root[data-theme='light'] .nav-link.active,
+:root[data-theme='light'] .text-light {
+  color: var(--text-primary) !important;
+}
+
+:root[data-theme='light'] .nav-link.active {
+  background: rgba(8, 127, 155, 0.1);
+}
+
+:root[data-theme='light'] .cyber-card:hover {
+  border-color: rgba(8, 127, 155, 0.35);
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.12);
+}
+
+:root[data-theme='light'] .cyber-table th,
+:root[data-theme='light'] .bg-dark {
+  background-color: var(--bg-surface-3) !important;
+}
+
+:root[data-theme='light'] .cyber-table tbody tr:hover {
+  background: rgba(8, 127, 155, 0.06);
+}
+
+:root[data-theme='light'] .cyber-input,
+:root[data-theme='light'] .cyber-input:focus {
+  background: #ffffff;
+  color: var(--text-primary);
+}
+
+:root[data-theme='light'] .cyber-input::placeholder {
+  color: var(--text-muted);
+}
+
+:root[data-theme='light'] .ai-copilot-card {
+  background: var(--bg-surface-1);
+}
+
+:root[data-theme='light'] .detail-val {
+  color: var(--text-primary);
+}

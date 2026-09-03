@@ -1,21 +1,20 @@
 {
-  "totalRequests": 14,
-  "totalViolations": 3,
-  "totalBlocks": 2,
+  "totalRequests": 58,
+  "totalViolations": 0,
+  "totalBlocks": 0,
   "ipActivity": {
-    "127.0.0.1": 14
+    "127.0.0.1": 58
   },
   "endpointHits": {
-    "/api/test": 13,
-    "/api/admin/unblock": 1
+    "/api/admin/logs?limit=50": 28,
+    "/api/admin/stats": 27,
+    "/dashboard": 1,
+    "/dashboard/api-test": 1,
+    "/api/test": 1
   },
   "statusCodeHits": {
-    "200": 9,
-    "403": 3,
-    "429": 2
+    "200": 56,
+    "304": 2
   },
-  "lastUpdated": "2026-09-02T19:41:24.365Z",
-  "violationIps": {
-    "127.0.0.1": 3
-  }
+  "lastUpdated": "2026-09-03T16:37:55.730Z"
 }

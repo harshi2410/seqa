@@ -52,6 +52,10 @@
             <input type="password" id="adminKeyInput" class="form-control cyber-input font-mono" placeholder="Admin Key" title="Admin Key for authentication">
           </div>
 
+          <button class="btn btn-sm theme-toggle" type="button" data-theme-toggle aria-label="Switch to light mode" title="Switch to light mode">
+            <i class="bi bi-sun-fill" data-theme-icon></i>
+          </button>
+
           <a href="/dashboard" class="btn btn-sm btn-cyber-outline">
             <i class="bi bi-speedometer2 me-1"></i> View Monitor Dashboard
           </a>
@@ -76,24 +80,6 @@
         </button>
         <button id="btnClearHistory" class="btn btn-sm btn-outline-secondary">
           <i class="bi bi-trash me-1"></i> Clear Log
-        </button>
-      </div>
-    </div>
-
-    <!-- Automated TAE Viva Demo Banner -->
-    <div class="ai-copilot-card p-3 mb-4">
-      <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
-        <div class="d-flex align-items-center gap-3">
-          <div class="brand-icon-wrapper bg-purple">
-            <i class="bi bi-mortarboard-fill text-light"></i>
-          </div>
-          <div>
-            <div class="font-mono text-light font-weight-bold">TAE Viva Presentation Mode</div>
-            <div class="text-muted small">One-click automated presentation: Demonstrates 200 OK -> 429 Rate Limit -> 403 IP Block -> Unblock</div>
-          </div>
-        </div>
-        <button class="btn btn-cyber-purple test-action-btn" id="btnAutoDemo">
-          <i class="bi bi-play-fill fs-5 align-middle"></i> Start Automated 1-Click Viva Demo
         </button>
       </div>
     </div>
@@ -264,5 +250,6 @@
   
   <!-- Sandbox Logic JS -->
   <script src="/js/api-test.js"></script>
+   <script src="/js/theme.js"></script>
 </body>
 </html>
